@@ -21,5 +21,4 @@ const authRepository = {
     newUser,
     findUser
 }
-
 export default authRepository
