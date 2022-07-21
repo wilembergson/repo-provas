@@ -2,8 +2,9 @@ import categoryRepository from "../repositories/categoryRepository.js"
 import disciplineRepository from "../repositories/disciplineRepository.js"
 import teacherRepository from "../repositories/teacherRepository.js"
 import teachersDisciplinesRepository from "../repositories/teachersDisciplinesRepository.js"
-import { TestInsertData } from "../repositories/testRepository.js"
+import testRepository, { TestInsertData } from "../repositories/testRepository.js"
 import ErrorMessage from "../utils/errorMessage.js"
+import sucessMessage from "../utils/sucessMessage.js"
 
 export type TestInformations={
     name:string,
@@ -25,7 +26,8 @@ async function newTest(testInfo:TestInformations){
         categoryId:categoryData.id,
         teacherDisciplineId: teacherDisciplineData.id
     } 
-    return newTest
+    await testRepository.newTest(newTest)
+    return sucessMessage("Novo teste salvo com sucesso.")
     
 }
 
