@@ -43,7 +43,13 @@ async function getTeacherDiscipline(teacherId:number, disciplineId:number) {
     return result
 }
 
+async function getTestsByTeacher(){
+    const result = await teachersDisciplinesRepository.listTestsByTeacher()
+    return result
+}
+
 const testService = {
-    newTest
+    newTest,
+    getTestsByTeacher
 }
 export default testService

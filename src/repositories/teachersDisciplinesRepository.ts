@@ -9,7 +9,25 @@ async function getTeacherDiscipline(teacherId:number, disciplineId:number) {
     })
 }
 
+async function listTestsByTeacher2() {
+    return await prisma.test.findMany({
+        include:{
+            teacherDiscipline:{
+                include:{
+                    teacher:{},
+                    discipline:{},
+                }
+            }
+        }
+    })
+}
+async function listTestsByTeacher() {
+    return await prisma.teacher.findMany({
+        
+    })
+}
 const teachersDisciplinesRepository = {
-    getTeacherDiscipline
+    getTeacherDiscipline,
+    listTestsByTeacher
 }
 export default teachersDisciplinesRepository

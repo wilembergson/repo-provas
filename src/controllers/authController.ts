@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 
-import { UserInsertData } from "../repositories/authRepository.js";
 import authService, { UserRegister } from "../services/authService.js";
 
 export async function createNewUser(req:Request, res:Response){
