@@ -28,6 +28,7 @@ export async function createTerm(){
     }
   })
 }
+
 export async function createDiscipline(){
   await prisma.discipline.create({
     data:{
