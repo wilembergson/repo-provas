@@ -5,10 +5,11 @@ import { UserInsertData } from "../../src/repositories/authRepository.js";
 import prisma from "../../src/config/database.js";
 
 export async function createUser(){
+    const password = faker.internet.password()
     const user:UserRegister = {
         email: faker.internet.email(),
-        password: "doda123456",
-        repeatPassword: "doda123456"
+        password: password,
+        repeatPassword: password
       };
       return user
 }
@@ -16,8 +17,8 @@ export async function createUser(){
 export async function createUserWithDiferentPasswords(){
   const user:UserRegister = {
       email: faker.internet.email(),
-      password: "doda123456",
-      repeatPassword: "doda123457"
+      password: faker.internet.password(),
+      repeatPassword: faker.internet.password()
     };
     return user
 }
@@ -65,6 +66,6 @@ export async function loginWithWrongPassword(){
   })
   return {
     email:user.email,
-    password:faker.internet.password()
+    password:faker.internet.password()  
   }
 }
