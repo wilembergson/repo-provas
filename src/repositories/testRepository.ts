@@ -9,6 +9,8 @@ async function newTest(test:TestInsertData){
     })
 }
 
+
+
 const testRepository = {
     newTest
 }

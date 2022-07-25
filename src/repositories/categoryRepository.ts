@@ -8,7 +8,31 @@ async function getByName(name:string) {
     })
 }
 
+async function getCategoryWithTests(id:number){
+    return await prisma.category.findMany({
+        include:{
+            tests:{
+                where:{
+                    teacherDisciplineId:id
+                },
+                include:{
+                    teacherDiscipline:{
+                        include:{
+                            discipline:{
+                                include:{
+                                    term:{}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
+
 const categoryRepository = {
-    getByName
+    getByName,
+    getCategoryWithTests
 }
 export default categoryRepository

@@ -1,3 +1,4 @@
+import { Teacher } from "@prisma/client"
 import categoryRepository from "../repositories/categoryRepository.js"
 import disciplineRepository from "../repositories/disciplineRepository.js"
 import teacherRepository from "../repositories/teacherRepository.js"
@@ -44,8 +45,47 @@ async function getTeacherDiscipline(teacherId:number, disciplineId:number) {
 }
 
 async function getTestsByTeacher(){
-    const result = await teachersDisciplinesRepository.listTestsByTeacher()
+    const teachersList = await teachersDisciplinesRepository.listTestsByTeacher()
+    const testsByTeacher = await getTeacherTests(teachersList)
+    return testsByTeacher
+
+}
+
+async function getTeacherTests(list: Teacher[]){
+    const result = []
+    for(let i=0; i<list.length; i++){
+        const tdList =  await teachersDisciplinesRepository.getTeacherDisciplineId(list[i].id)
+        let tests = []
+        for(let i=0; i<tdList.length; i++){
+           const cat = await categoryRepository.getCategoryWithTests(tdList[i].id)
+           const category = cat.filter(cat =>{
+            if(cat.tests.length !==0) return cat
+           })
+           const resultCateg=[]
+           for(let i=0; i<category.length; i++){
+            tests.push({
+                category:category[i].name,
+                tests: category[i].tests
+            })
+           }
+        }
+
+        const testsByTeacher = {
+            teacher: list[i].name,
+            tests: tests
+        }
+        result.push(testsByTeacher)
+    }
     return result
+}
+
+async function getCategoriesWithTests(categoriesID:number[]){
+    const categoryWithTests = []
+    for(let i=0; i<categoriesID.length; i++){
+        const categoryAndTests = await categoryRepository.getCategoryWithTests(categoriesID[i])
+        categoryWithTests.push(categoryAndTests)
+    }
+    return categoryWithTests
 }
 
 const testService = {
