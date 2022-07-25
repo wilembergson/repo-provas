@@ -71,6 +71,7 @@ async function getTeacherTests(list: Teacher[]){
         }
 
         const testsByTeacher = {
+            id: list[i].id,
             teacher: list[i].name,
             tests: tests
         }
