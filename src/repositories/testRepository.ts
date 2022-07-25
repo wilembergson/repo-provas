@@ -9,9 +9,42 @@ async function newTest(test:TestInsertData){
     })
 }
 
+async function getTestsByTerms(){
+     return await prisma.term.findMany({
+        include:{
+            disciplines:{
+                include:{
+                    theachersDiscipline:{
+                        
+                    }
+                }
+            }
+        }
+     })
+}
 
+async function getCategoryWithTests(theacherDisciplineId:number){
+    return await prisma.category.findMany({
+        include:{
+            tests:{
+                where:{
+                    teacherDisciplineId:theacherDisciplineId
+                },
+                include:{
+                    teacherDiscipline:{
+                        select:{
+                            teacher:{}
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
 
 const testRepository = {
-    newTest
+    newTest,
+    getTestsByTerms,
+    getCategoryWithTests
 }
 export default testRepository

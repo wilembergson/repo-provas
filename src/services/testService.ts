@@ -51,6 +51,22 @@ async function getTestsByTeacher(){
 
 }
 
+async function getTestsByTerms(){
+    const testsByTerms = await testRepository.getTestsByTerms()
+    for(let i=0; i<testsByTerms.length; i++){
+        for(let j=0; j<testsByTerms[i].disciplines.length; j++){
+            for(let k=0; k<testsByTerms[i].disciplines[j].theachersDiscipline.length; k++){
+                const category = await testRepository.getCategoryWithTests(testsByTerms[i].disciplines[j].theachersDiscipline[k].id)
+                const categoryData = {
+                    category:category
+                }
+                testsByTerms[i].disciplines[j].theachersDiscipline[k] = {...testsByTerms[i].disciplines[j].theachersDiscipline[k], ...categoryData}
+            } 
+        }
+    }
+    return testsByTerms
+}
+
 async function getTeacherTests(list: Teacher[]){
     const result = []
     for(let i=0; i<list.length; i++){
@@ -61,7 +77,6 @@ async function getTeacherTests(list: Teacher[]){
            const category = cat.filter(cat =>{
             if(cat.tests.length !==0) return cat
            })
-           const resultCateg=[]
            for(let i=0; i<category.length; i++){
             tests.push({
                 category:category[i].name,
@@ -69,7 +84,6 @@ async function getTeacherTests(list: Teacher[]){
             })
            }
         }
-
         const testsByTeacher = {
             id: list[i].id,
             teacher: list[i].name,
@@ -91,6 +105,7 @@ async function getCategoriesWithTests(categoriesID:number[]){
 
 const testService = {
     newTest,
-    getTestsByTeacher
+    getTestsByTeacher,
+    getTestsByTerms
 }
 export default testService

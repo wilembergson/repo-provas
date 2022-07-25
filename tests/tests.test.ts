@@ -98,4 +98,14 @@ describe("POST /newtest", () => {
         const response = await supertest(app).get("/tests-by-teacher");
         expect(response.status).toEqual(404);
     });
+
+    it("Deve retornar codigo 200 se o token for passado corretamente", async () => {
+        const response = await supertest(app).get("/tests-by-discipline").set('Authorization', `Bearer ${token}`);
+        expect(response.status).toEqual(200);
+    });
+
+    it("Deve retornar codigo 401 se o token não for passado", async () => {
+        const response = await supertest(app).get("/tests-by-discipline");
+        expect(response.status).toEqual(404);
+    });
 })

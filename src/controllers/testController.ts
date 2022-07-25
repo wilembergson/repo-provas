@@ -11,3 +11,8 @@ export async function listTestsByTeacher(req:Request, res:Response){
     const result = await testService.getTestsByTeacher()
     return res.status(200).json(result)
 }
+
+export async function listTestsByDisciplines(req:Request, res:Response){
+    const result = await testService.getTestsByTerms()
+    return res.status(200).json(result)
+}
